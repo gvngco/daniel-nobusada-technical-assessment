@@ -22,9 +22,12 @@ export const TodoProvider: React.FC<TodoProviderProps> = (props) => {
       },
     });
 
-  const deleteTodo = (id: number): void => dispatch({
+  const deleteTodo = (id: string, userId: string): void => dispatch({
     type: 'DELETE_TODO_ITEM', 
-    payload: id
+    payload: {
+      userId: userId,
+      items: [{id: id}]
+    }
   });
 
   const toggleTodo = (id: number): any => dispatch({

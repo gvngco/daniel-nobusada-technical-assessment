@@ -1,8 +1,11 @@
+/* As per the context manager, I've decided to study the ContextAPI and implement it and to split its reducer, provider, actions an hooks into separate files. 
+Relevant unit tests that are worth testing here are the localstorage interactions due the rest being boilerplate code to enable ContextAPI */
+
 import { Context, createContext, useReducer } from 'react';
 import { Actions, ActionTypes } from './Actions';
 
 interface TodoState {
-  todoItems: TodoList;
+  todoList: TodoList;
 }
 
 // TODO: change all todoItmes to an array of UserTodos
@@ -10,7 +13,7 @@ interface TodoState {
 // TODO: selector: fetch from localstorage 
 
 export const initialState: TodoState = {
-  todoItems: [{userId: '', items: []}],
+  todoList: [{userId: '', items: []}],
 };
 
 export const todoReducer = (state: TodoState, action: Actions): TodoState => {
@@ -19,40 +22,40 @@ export const todoReducer = (state: TodoState, action: Actions): TodoState => {
       const newTodos = action.payload as UserTodos;
       return {
         ...state,
-        todoItems: {
-          ...state.todoItems,
-          items: newTodos.items
-        }
+        todoList: [
+          ...state.todoList,
+          newTodos
+        ]
       };
     }
 
     case ActionTypes.DELETE_TODO_ITEM:{
       if(action.payload === undefined) return state;
 
-      const todoIdToDelete = action.payload as number;
+      const userTodosToUpdate = action.payload as UserTodos;
 
       return {
         ...state,
-        todoItems: {
-          userId: state.todoItems.userId,
-          items: state.todoItems.items?.filter((_, index) => index !== todoIdToDelete)
-        },
+        todoList: [
+          ...state.todoList,
+          userTodosToUpdate
+        ]
       };
     }
 
     case ActionTypes.TOGGLE_TODO_ITEM: {
       const todoIdxToToggle = action.payload as number;
       const updatedItems = {
-        ...state.todoItems.items,
+        ...state.todoList.items,
         [todoIdxToToggle]: {
-          ...state.todoItems.items[todoIdxToToggle],
-          completed: !state.todoItems.items[todoIdxToToggle].completed
+          ...state.todoList.items[todoIdxToToggle],
+          completed: !state.todoList.items[todoIdxToToggle].completed
         }
       }
       return {
         ...state,
-        todoItems: {
-          userId : state.todoItems.userId,
+        todoList: {
+          userId : state.todoList.userId,
           items : updatedItems
         }
       };
