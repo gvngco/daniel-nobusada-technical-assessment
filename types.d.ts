@@ -1,6 +1,7 @@
 type Todo = {
 	id?: string;
 	value: string;
+  completed: boolean
 };
 
 type UserTodos = {
