@@ -17,15 +17,15 @@ const Todo = (props: TodoProps) => {
 
   return (
     <div>
+      <h1>Please select an user to manage its todo list</h1>
       <DropdownTodo
         users={mockUsers}
         setSelectedUser={setSelectedUser}
       />
       {
-        todoItems?.items.length === 0 && (
           <div>
             {
-              todoItems.items.map((i) => (
+              todoItems?.items.map((i) => (
                 <TodoItem
                   key={i.id}
                   item={i}
@@ -33,8 +33,12 @@ const Todo = (props: TodoProps) => {
                 />
               ))
             }
+
+            {
+              selectedUser && <TodoItem selectedUser={selectedUser} />
+            }
+
           </div>
-        )
       }
     </div>
   )

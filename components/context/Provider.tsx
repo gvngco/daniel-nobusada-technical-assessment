@@ -22,22 +22,23 @@ export const TodoProvider: React.FC<TodoProviderProps> = (props) => {
       },
     });
 
-  const deleteTodo = (id: string, userId: string): void => dispatch({
-    type: 'DELETE_TODO_ITEM', 
-    payload: {
-      userId: userId,
-      items: [{id: id}]
-    }
-  });
+  // const deleteTodo = (id: string, userId: string): void => dispatch({
+  //   type: 'DELETE_TODO_ITEM', 
+  //   payload: {
+  //     userId: userId,
+  //     items: [{id: id}]
+  //   }
+  // });
 
-  const toggleTodo = (id: number): any => dispatch({
-    type: 'TOGGLE_TODO_ITEM',
-    payload: id
-  });
+  // const toggleTodo = (id: number): any => dispatch({
+  //   type: 'TOGGLE_TODO_ITEM',
+  //   payload: id
+  // });
 
   return (
     <TodoContext.Provider 
-      value={{ addTodo, deleteTodo, toggleTodo}}
+      //value={{ addTodo, deleteTodo, toggleTodo}}
+      value={{ addTodo }}
       //@ts-ignore !IMPORTANT! This ignore is voluntary, it's just to avoid the error for passing on context props
       {...props}
     >

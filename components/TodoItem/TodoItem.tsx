@@ -4,7 +4,7 @@ import { useTodo } from '../context/Hooks'
 // TODO: finish this file 
 
 type TodoItemProps = {
-  item: Todo,
+  item?: Todo,
   selectedUser: string,
 }
 
@@ -20,7 +20,8 @@ const TodoItem = ({ item, selectedUser}: TodoItemProps) => {
     }
   }
   const handleToggle = () => {}
-  const addNewTodo = () => {
+  const handleDeleteTodo = () => {}
+  const handleAddNewTodo = () => {
     if (inputValue) {
       addTodo()
       setInputValue('')
@@ -29,10 +30,10 @@ const TodoItem = ({ item, selectedUser}: TodoItemProps) => {
 
   return (
     <div onClick={handleToggle}>
-      <p>{ item.value }</p>
+      <p>{ item?.value }</p>
       <div>
         {
-          item.completed && (
+          item?.completed && (
             <p>Completed</p>
           )
         }
@@ -47,14 +48,14 @@ const TodoItem = ({ item, selectedUser}: TodoItemProps) => {
         <button 
           type='submit'
           value='Add'
-          onClick={onClickAdd}
+          onClick={handleAddNewTodo}
         >
           Add
         </button>
         <button 
           type='button'
           value='Delete'
-          onClick={onClickDelete}
+          onClick={handleDeleteTodo}
         >
           Delete
         </button>

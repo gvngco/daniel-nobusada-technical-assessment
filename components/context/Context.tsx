@@ -29,37 +29,37 @@ export const todoReducer = (state: TodoState, action: Actions): TodoState => {
       };
     }
 
-    case ActionTypes.DELETE_TODO_ITEM:{
-      if(action.payload === undefined) return state;
+    // case ActionTypes.DELETE_TODO_ITEM:{
+    //   if(action.payload === undefined) return state;
 
-      const userTodosToUpdate = action.payload as UserTodos;
+    //   const userTodosToUpdate = action.payload as UserTodos;
 
-      return {
-        ...state,
-        todoList: [
-          ...state.todoList,
-          userTodosToUpdate
-        ]
-      };
-    }
+    //   return {
+    //     ...state,
+    //     todoList: [
+    //       ...state.todoList,
+    //       userTodosToUpdate
+    //     ]
+    //   };
+    // }
 
-    case ActionTypes.TOGGLE_TODO_ITEM: {
-      const todoIdxToToggle = action.payload as number;
-      const updatedItems = {
-        ...state.todoList.items,
-        [todoIdxToToggle]: {
-          ...state.todoList.items[todoIdxToToggle],
-          completed: !state.todoList.items[todoIdxToToggle].completed
-        }
-      }
-      return {
-        ...state,
-        todoList: {
-          userId : state.todoList.userId,
-          items : updatedItems
-        }
-      };
-    }
+    // case ActionTypes.TOGGLE_TODO_ITEM: {
+    //   const todoIdxToToggle = action.payload as number;
+    //   const updatedItems = {
+    //     ...state.todoList.items,
+    //     [todoIdxToToggle]: {
+    //       ...state.todoList.items[todoIdxToToggle],
+    //       completed: !state.todoList.items[todoIdxToToggle].completed
+    //     }
+    //   }
+    //   return {
+    //     ...state,
+    //     todoList: {
+    //       userId : state.todoList.userId,
+    //       items : updatedItems
+    //     }
+    //   };
+    // }
     
     default: {
       return state;
