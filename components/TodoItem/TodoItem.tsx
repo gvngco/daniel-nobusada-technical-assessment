@@ -23,7 +23,7 @@ const TodoItem = ({ item, selectedUser}: TodoItemProps) => {
   const handleDeleteTodo = () => {}
   const handleAddNewTodo = () => {
     if (inputValue) {
-      addTodo()
+      addTodo(inputValue, selectedUser)
       setInputValue('')
     }
   }

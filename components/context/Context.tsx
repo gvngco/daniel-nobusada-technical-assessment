@@ -1,7 +1,7 @@
 /* As per the context manager, I've decided to study the ContextAPI and implement it and to split its reducer, provider, actions an hooks into separate files. 
 Relevant unit tests that are worth testing here are the localstorage interactions due the rest being boilerplate code to enable ContextAPI */
 
-import { Context, createContext, useReducer } from 'react';
+import { Context, createContext } from 'react';
 import { Actions, ActionTypes } from './Actions';
 
 interface TodoState {
@@ -20,6 +20,18 @@ export const todoReducer = (state: TodoState, action: Actions): TodoState => {
   switch (action.type) {
     case ActionTypes.ADD_TODO_ITEM: {
       const newTodos = action.payload as UserTodos;
+
+      debugger;
+      // Cornercase in case of adding into the initialState
+      if (state.todoList.length === 1 && state.todoList[0].userId === '') {
+        return {
+          ...state,
+          todoList: [
+            newTodos
+          ]
+        };
+      }
+
       return {
         ...state,
         todoList: [

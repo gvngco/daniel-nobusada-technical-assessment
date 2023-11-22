@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from 'react'
 import DropdownTodo from './Dropdown/Dropdown'; 
 import { mockUsers } from '../mock/mocks'; 
-import TodoUserList from './TodoList/TodoUserList';
 import { useTodo } from './context/Hooks';
 import TodoItem from './TodoItem/TodoItem';
 
@@ -11,10 +10,11 @@ type TodoProps = {}
 
 const Todo = (props: TodoProps) => {
   const [selectedUser, setSelectedUser] = useState<string | null>(null);
-  const { todoItems } = useTodo();
+  const { todoList } = useTodo();
 
   // TODO: guarantee that relevant data is being caught from the selector
 
+  debugger;
   return (
     <div>
       <h1>Please select an user to manage its todo list</h1>
@@ -25,11 +25,11 @@ const Todo = (props: TodoProps) => {
       {
           <div>
             {
-              todoItems?.items.map((i) => (
+              todoList?.items?.map((i: Todo | undefined) => (
                 <TodoItem
-                  key={i.id}
+                  key={i?.id}
                   item={i}
-                  selectedUser={todoItems.userId}
+                  selectedUser={todoList.userId}
                 />
               ))
             }
@@ -37,7 +37,6 @@ const Todo = (props: TodoProps) => {
             {
               selectedUser && <TodoItem selectedUser={selectedUser} />
             }
-
           </div>
       }
     </div>
