@@ -7,7 +7,9 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     <>
-      <Component {...pageProps} />
+      <TodoContextProvider>
+        <Component {...pageProps} />
+      </TodoContextProvider>
     </>
   )
 }
