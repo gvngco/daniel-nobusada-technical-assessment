@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 
 type DropdownProps = {
     users: Array<string>,
@@ -6,7 +6,6 @@ type DropdownProps = {
 }
 
 const DropdownTodo = (props: DropdownProps) => {
-  // talvez trocar o state pelo context api?
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     props.setSelectedUser(e.target.value);
   }
@@ -14,7 +13,7 @@ const DropdownTodo = (props: DropdownProps) => {
   return (
     <div>
       <select onChange={handleChange}>
-        <option value="default" disabled hidden>Select an user</option>
+        <option value="default" hidden>Select an user</option>
         {props.users.map((user) => (
           <option key={user} value={user}>
             {user}

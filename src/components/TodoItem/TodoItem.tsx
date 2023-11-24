@@ -1,5 +1,4 @@
 import React from 'react'
-import { useTodo } from '../context/Hooks'
 
 // TODO: finish this file 
 
@@ -10,7 +9,8 @@ type TodoItemProps = {
 
 const TodoItem = ({ item, selectedUser}: TodoItemProps) => {
   return (
-    <div> 
+    <div>
+      
     </div>
   )
 }

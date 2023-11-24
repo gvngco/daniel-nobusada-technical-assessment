@@ -1,27 +1,89 @@
 'use client'
 
-import { FC, createContext, useReducer } from "react"
+import { FC, createContext, useMemo, useReducer } from "react"
 
-export const TodoContext = createContext('')
+interface TodoState {
+  todoList: TodoList;
+  addTodo: (userTodo: UserTodos) => void;
+  deleteTodo: (userId: string, todoId: string) => void;
+  toggleTodo: (userId: string, todoId: string) => void;
+}
+
+const initialState: TodoState = {
+  todoList: [{userId: '', items: []}],
+  addTodo: () => {},
+  deleteTodo: () => {},
+  toggleTodo: () => {},
+};
+
+export const TodoContext = createContext(initialState)
+
+export const actionTypes = {
+  ADD_TODO_ITEM: 'ADD_TODO_ITEM',
+  DELETE_TODO_ITEM: 'DELETE_TODO_ITEM',
+  TOGGLE_TODO_ITEM: 'TOGGLE_TODO_ITEM',
+}
 
 export const TodoContextProvider: FC = (props: any) => { 
-  const action = {
-    ADD_TODO: 'ADD_TODO',
-  }
 
   const todoReducer = (state: any, action: any) => {
     switch (action.type) {
-      case 'ADD_TODO': {
-        return [...state, action.payload]
+      case actionTypes.ADD_TODO_ITEM: {
+        debugger;
+        if (state.todoList.lenght === 1 && state.todoList[0].userId === '') {
+          debugger;
+          // esse cenário não tá funcionando legal
+          return {
+            ...state,
+            todoList: [{
+              userId: action.payload.userId,
+              items: action.payload.items
+            }]
+          }
+        }
+        return {
+          ...state,
+          todoList: [...[action.payload], ...state.todoList]
+        }
       }
+      case actionTypes.DELETE_TODO_ITEM: {
+      }
+      case actionTypes.TOGGLE_TODO_ITEM: {
+      }
+      default:
+        return state
     }
   } 
 
-  const [todos, setTodos] = useReducer(todoReducer, [])
+  const [state, dispatch] = useReducer(todoReducer, initialState) // estranho que o state tá zerado
 
-  // mandar o useMemo aqui dos values
+  const addTodo = (userTodo: UserTodos) => dispatch({
+    type: actionTypes.ADD_TODO_ITEM,
+    payload: userTodo
+  })
+
+  const deleteTodo = (userId: string, todoId: string) => dispatch({
+    type: actionTypes.DELETE_TODO_ITEM,
+    payload: { userId, todoId }
+  })
+
+  const toggleTodo = (userId: string, todoId: string) => dispatch({
+    type: actionTypes.TOGGLE_TODO_ITEM,
+    payload: { userId, todoId }
+  })
+
+  const value = useMemo (
+    () => ({
+      ...state,
+      addTodo,
+      deleteTodo,
+      toggleTodo
+    }),
+    [state],
+  )
+
   return (
-    <TodoContext.Provider value={{ todos, setTodos }}>
+    <TodoContext.Provider value={value}>
       {props.children}
     </TodoContext.Provider>
   )
