@@ -31,15 +31,12 @@ export const TodoContextProvider: FC = (props: any) => {
       case actionTypes.ADD_TODO_ITEM: {
         debugger;
         if (state.todoList.lenght === 1 && state.todoList[0].userId === '') {
-          debugger;
-          // this scenario is not working properly
+          // this scenario is not working properly and i cant figure out why
+          state.todoList[0].userId = action.payload.userId
+          state.todoList[0].items = action.payload.items
           return {
             ...state,
-            todoList: [{
-              userId: action.payload.userId,
-              items: action.payload.items
-            }]
-          }
+         }
         }
         return {
           ...state,
@@ -47,15 +44,36 @@ export const TodoContextProvider: FC = (props: any) => {
         }
       }
       case actionTypes.DELETE_TODO_ITEM: {
+        // this scenario wasnt property tested due the list not being maintained properly
+        const userTodoList = state.todoList
+          .filter((todoUserList: UserTodos) => todoUserList.userId === action.payload.userId)
+          .filter((todoUserList: UserTodos) => todoUserList.items[0].id !== action.payload.todoId)
+        return {
+          ...state,
+          todoList: [...userTodoList]
+        }
       }
       case actionTypes.TOGGLE_TODO_ITEM: {
+        // this scenario wasnt property tested due the list not being maintained properly
+        const userTodolist = state.todoList
+          .filter((todoUserList: UserTodos) => todoUserList.userId === action.payload.userId)
+          .map((todoUserList: UserTodos) => {
+            const todoItem = todoUserList.items
+              .filter((item: Todo) => item.id === action.payload.todoId)
+            todoItem[0].completed = !todoItem[0].completed
+            return todoUserList
+          })
+          return {
+            ...state,
+            todoList: [...userTodolist]
+          }
       }
       default:
         return state
     }
   } 
 
-  const [state, dispatch] = useReducer(todoReducer, initialState) // estranho que o state tá zerado
+  const [state, dispatch] = useReducer(todoReducer, initialState)
 
   const addTodo = (userTodo: UserTodos) => dispatch({
     type: actionTypes.ADD_TODO_ITEM,
