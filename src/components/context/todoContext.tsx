@@ -32,7 +32,7 @@ export const TodoContextProvider: FC = (props: any) => {
         debugger;
         if (state.todoList.lenght === 1 && state.todoList[0].userId === '') {
           debugger;
-          // esse cenário não tá funcionando legal
+          // this scenario is not working properly
           return {
             ...state,
             todoList: [{

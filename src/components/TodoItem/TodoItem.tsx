@@ -1,16 +1,22 @@
 import React from 'react'
 
-// TODO: finish this file 
 
 type TodoItemProps = {
-  item?: Todo,
-  selectedUser: string,
+  item: Todo,
+  index: number,
+  buttonDeleteTodo: (index: number) => void
 }
 
-const TodoItem = ({ item, selectedUser}: TodoItemProps) => {
+const TodoItem = ({ item, index, buttonDeleteTodo }: TodoItemProps) => {
+  const handleDeleteTodo = () => {
+    buttonDeleteTodo(index)
+  }
+
   return (
     <div>
-      
+      <p>{item.value}</p>  
+      {item.completed ? <p>Completed</p> : <p>Not completed</p>}
+      <button onClick={handleDeleteTodo}>Delete</button> 
     </div>
   )
 }
