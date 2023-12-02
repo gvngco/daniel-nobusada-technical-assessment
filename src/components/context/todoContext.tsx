@@ -4,13 +4,14 @@ import { FC, createContext, useMemo, useReducer } from "react"
 
 interface TodoState {
   todoList: TodoList;
-  addTodo: (userTodo: UserTodos) => void;
+  addTodo: (userTodoToAdd : UserTodoToAdd) => void;
   deleteTodo: (userId: string, todoId: string) => void;
   toggleTodo: (userId: string, todoId: string) => void;
 }
 
 const initialState: TodoState = {
-  todoList: [{userId: '', items: []}],
+  //todoList: [{userId: '', items: []}],
+  todoList: [],
   addTodo: () => {},
   deleteTodo: () => {},
   toggleTodo: () => {},
@@ -29,20 +30,31 @@ export const TodoContextProvider: FC = (props: any) => {
   const todoReducer = (state: any, action: any) => {
     switch (action.type) {
       case actionTypes.ADD_TODO_ITEM: {
+        // first add todo item runs once
+        // from second add todo onward it runs twice
         debugger;
-        if (state.todoList.lenght === 1 && state.todoList[0].userId === '') {
-          // this scenario is not working properly and i cant figure out why
-          state.todoList[0].userId = action.payload.userId
-          state.todoList[0].items = action.payload.items
+        if (state.todoList.length > 0) {
+          const userTodoList = state.todoList
+            .filter((todoUserList: UserTodos) => todoUserList.userId === action.payload.userId)
+          if (userTodoList.length > 0) {
+            userTodoList[0].items.push(action.payload.item)
+            return {
+              ...state,
+              todoList: [...state.todoList]
+            }
+          }
+          // what if list gets empty?
+        }
+        var userTodos : UserTodos = {
+          userId: action.payload.userId,
+          items: [action.payload.item]
+        }
           return {
             ...state,
-         }
-        }
-        return {
-          ...state,
-          todoList: [...[action.payload], ...state.todoList]
-        }
+            todoList: [...state.todoList, userTodos] // convert item to items list
+          }
       }
+      /*
       case actionTypes.DELETE_TODO_ITEM: {
         // this scenario wasnt property tested due the list not being maintained properly
         const userTodoList = state.todoList
@@ -68,6 +80,7 @@ export const TodoContextProvider: FC = (props: any) => {
             todoList: [...userTodolist]
           }
       }
+      */
       default:
         return state
     }
@@ -75,9 +88,9 @@ export const TodoContextProvider: FC = (props: any) => {
 
   const [state, dispatch] = useReducer(todoReducer, initialState)
 
-  const addTodo = (userTodo: UserTodos) => dispatch({
+  const addTodo = (userTodoToAdd: UserTodoToAdd) => dispatch({
     type: actionTypes.ADD_TODO_ITEM,
-    payload: userTodo
+    payload: userTodoToAdd
   })
 
   const deleteTodo = (userId: string, todoId: string) => dispatch({
