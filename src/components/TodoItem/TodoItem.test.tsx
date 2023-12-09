@@ -26,6 +26,7 @@ describe('TodoItem', () => {
     const todoText = getByText(mockItem.value);
     const deleteButton = getByText('Delete');
 
+    // those 3 lint errors are to be ignored, hence the eslint-env jest at the top of this file
     expect(todoItem).toBeInTheDocument();   
     expect(todoText).toBeInTheDocument();
     expect(deleteButton).toBeInTheDocument();

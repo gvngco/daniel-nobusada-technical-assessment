@@ -12,7 +12,7 @@ const DropdownTodo = (props: DropdownProps) => {
 
   return (
     <div>
-      <select onChange={handleChange}>
+      <select onChange={handleChange} data-testid='dropdown'>
         <option value="default" hidden>Select an user</option>
         {props.users.map((user) => (
           <option key={user} value={user}>

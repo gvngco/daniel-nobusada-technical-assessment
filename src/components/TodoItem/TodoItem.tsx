@@ -22,7 +22,11 @@ const TodoItem = ({ item, index, buttonDeleteTodo, buttonToggleTodo }: TodoItemP
   }
 
   return (
-    <div className={item.completed ? 'item-completed' : 'item'} onClick={handleToggleTodo}>
+    <div 
+      className={item.completed ? 'item-completed' : 'item'}
+      onClick={handleToggleTodo}
+      data-testid='todo-item'
+    >
       <p>{item.value}</p>  
       <button className='delete-button' onClick={handleDeleteTodo}>Delete</button> 
     </div>

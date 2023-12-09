@@ -1,1 +1,1 @@
-export const mockUsers = ["Plato", "Aristotle", "Descartes", "Kant"];
+export const mockUsers = ['Plato', 'Aristotle', 'Descartes', 'Kant'];
