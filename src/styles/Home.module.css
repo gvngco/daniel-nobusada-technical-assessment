@@ -1,5 +1,8 @@
 .container {
   padding: 0 2rem;
+  margin: 4rem;
+  border-radius: 32px;
+  background-color: white;
 }
 
 .main {
@@ -10,6 +13,30 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.subtitle {
+  font-size: 1.5rem;
+  text-align: center;
+  margin: 2rem;
+}
+
+.todos-container {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.item {
+  display: flex;
+  gap: 0.5rem;
+  text-decoration: none;
+}
+.item-completed {
+  text-decoration: line-through;
 }
 
 .title a {
