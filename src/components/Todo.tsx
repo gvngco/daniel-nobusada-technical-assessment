@@ -12,10 +12,7 @@ import { UserTodos } from '../../types';
 
 /*
   [ ] style this component
-  [ ] show warning when no user is selected
   [ ] input events are being fired multiple times. debouncing might not be working properly
-  [ ] store on localstorage
-  [ ] tests where relevant 
 */
 
 type TodoProps = {}
@@ -39,7 +36,7 @@ const Todo = (props: TodoProps) => {
   }
 
   const buttonAddTodo = () => {
-    if (selectedUser === null) return // should a warning be shown?
+    if (selectedUser === null) return 
     addTodo({
       userId: selectedUser,
       item: {
@@ -54,7 +51,7 @@ const Todo = (props: TodoProps) => {
   const handleTodoAddButton = debounce(buttonAddTodo, 300, { leading: true, trailing: false })
 
   const buttonDeleteTodo =  (index: number) => {
-   if (selectedUser === null) return // should a warning be shown?
+   if (selectedUser === null) return 
     deleteTodo({
       userId: selectedUser, 
       index
@@ -62,7 +59,7 @@ const Todo = (props: TodoProps) => {
   }
 
  const buttonToggleTodo =  (index: number) => {
-   if (selectedUser === null) return // should a warning be shown?
+   if (selectedUser === null) return 
     toggleTodo({
       userId: selectedUser, 
       index

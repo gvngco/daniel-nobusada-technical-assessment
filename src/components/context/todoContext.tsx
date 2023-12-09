@@ -3,7 +3,7 @@
 import { FC, createContext, useMemo, useReducer } from "react"
 import { UserTodoToAdd, UserTodoToDelete, UserTodoToToggle, UserTodos, TodoList, Todo } from './../../../types.d' 
 
-interface TodoState {
+export interface TodoState {
   todoList: TodoList;
   addTodo: (userTodoToAdd: UserTodoToAdd) => void;
   deleteTodo: (userTodoToDelete: UserTodoToDelete) => void;
