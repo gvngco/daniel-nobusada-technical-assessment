@@ -1,6 +1,7 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
+import Todo from '../components/Todo'
 
 const Home: NextPage = () => {
   return (
@@ -16,7 +17,7 @@ const Home: NextPage = () => {
           TODO App
         </h1>
 
-        {/* The Form should go here */}
+        <Todo />
 
       </main>
     </div>
