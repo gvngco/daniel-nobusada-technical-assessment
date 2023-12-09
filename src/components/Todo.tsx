@@ -7,17 +7,15 @@ import TodoItem from './TodoItem/TodoItem';
 import { TodoContext, TodoContextProvider, actionTypes } from './context/todoContext';
 import debounce from 'lodash.debounce';
 import { DebounceInput } from 'react-debounce-input';
+import { slugify } from '../utils/utils';
+import { UserTodos } from '../../types';
 
 /*
-  [ ] when selecting another user, it seems that the todo list is clearing out
-  [ ] toggle action
-  [ ] listing no todos with default text
-  [ ] move slugify to utils file
   [ ] style this component
   [ ] show warning when no user is selected
   [ ] input events are being fired multiple times. debouncing might not be working properly
-  [ ] tests where relevant 
   [ ] store on localstorage
+  [ ] tests where relevant 
 */
 
 type TodoProps = {}
@@ -39,25 +37,6 @@ const Todo = (props: TodoProps) => {
     if (!value) return setInputTodo('')
     setInputTodo(value)
   }
-
-  // move to utils
-  const slugify = (str: string) => {
-    str = str.replace(/^\s+|\s+$/g, ''); // trim
-    str = str.toLowerCase();
-  
-    // remove accents, swap ñ for n, etc
-    var from = "àáäâèéëêìíïîòóöôùúüûñç·/_,:;";
-    var to   = "aaaaeeeeiiiioooouuuunc------";
-    for (var i=0, l=from.length ; i<l ; i++) {
-        str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
-    }
-
-    str = str.replace(/[^a-z0-9 -]/g, '') // remove invalid chars
-        .replace(/\s+/g, '-') // collapse whitespace and replace by -
-        .replace(/-+/g, '-'); // collapse dashes
-
-    return str;
-}
 
   const buttonAddTodo = () => {
     if (selectedUser === null) return // should a warning be shown?
@@ -96,37 +75,40 @@ const Todo = (props: TodoProps) => {
     setThisUserTodos(thisUserList[0])
   }, [selectedUser, todoList])
   
-  console.log(todoList)
-
   return (
     <div>
-      <h1>Please select an user to manage their to do list</h1>
-      <DropdownTodo
-        users={mockUsers}
-        setSelectedUser={setSelectedUser}
-      />
-      {
-        thisUserTodos?.items && thisUserTodos.items
-          .map((todo, index) => { 
-            return <TodoItem
-              key={index}
-              index={index}
-              item={todo}
-              buttonDeleteTodo={buttonDeleteTodo}
-              buttonToggleTodo={buttonToggleTodo}
-            />
-          })
-      }
-      <div>
-        <DebounceInput
-          type='text'
-          value={inputTodo}
-          placeholder='Add a todo'
-          minLength={1}
-          debounceTimeout={200}
-          onChange={event => handleChange(event.target.value)}
+      <h2 className='subtitle'>Please select an user to manage their to do list</h2>
+      <div className='todos-container'>
+        <DropdownTodo
+          users={mockUsers}
+          setSelectedUser={setSelectedUser}
         />
-        <button onClick={handleTodoAddButton}>Add todo</button>
+        <div className='items-list'>
+          {
+            thisUserTodos?.items && thisUserTodos.items
+              .map((todo, index) => { 
+                if (todo.value === '') return null
+                return <TodoItem
+                  key={index}
+                  index={index}
+                  item={todo}
+                  buttonDeleteTodo={buttonDeleteTodo}
+                  buttonToggleTodo={buttonToggleTodo}
+                />
+              })
+          }
+        </div>
+        <div>
+          <DebounceInput
+            type='text'
+            value={inputTodo}
+            placeholder='Add a todo'
+            minLength={1}
+            debounceTimeout={200}
+            onChange={event => handleChange(event.target.value)}
+          />
+          <button onClick={handleTodoAddButton}>Add todo</button>
+        </div>
       </div>
     </div>
   )

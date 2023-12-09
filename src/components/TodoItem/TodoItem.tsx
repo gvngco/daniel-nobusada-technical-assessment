@@ -1,4 +1,5 @@
 import React from 'react'
+import { Todo } from '../../../types.d'
 
 /*
   [ ] style this component
@@ -21,11 +22,9 @@ const TodoItem = ({ item, index, buttonDeleteTodo, buttonToggleTodo }: TodoItemP
   }
 
   return (
-    <div>
+    <div className={item.completed ? 'item-completed' : 'item'} onClick={handleToggleTodo}>
       <p>{item.value}</p>  
-      {item.completed ? <p>Completed</p> : <p>Not completed</p>}
-      <button onClick={handleDeleteTodo}>Delete</button> 
-      <button onClick={handleToggleTodo}>Toggle</button>
+      <button className='delete-button' onClick={handleDeleteTodo}>Delete</button> 
     </div>
   )
 }

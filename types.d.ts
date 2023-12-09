@@ -1,27 +1,29 @@
-type Todo = {
+import "@testing-library/jest-dom/extend-expect"
+
+export type Todo = {
 	id?: string;
 	value: string;
   completed: boolean
 };
 
-type UserTodos = {
+export type UserTodos = {
 	userId: string;
 	items: Todo[];
 };
 
-type UserTodoToAdd = { // type TodoAdAction
+export type UserTodoToAdd = {
 	userId: string;
 	item: Todo;
 }
 
-type UserTodoToDelete = {
+export type UserTodoToDelete = {
 	userId: string;
-	index: int
+	index: number
 }
 
-type UserTodoToToggle = {
+export type UserTodoToToggle = {
 	userId: string;
-	index: int
+	index: number 
 }
 
-type TodoList = UserTodos[];
+export type TodoList = UserTodos[];

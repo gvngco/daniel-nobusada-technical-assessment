@@ -1,6 +1,7 @@
 'use client'
 
 import { FC, createContext, useMemo, useReducer } from "react"
+import { UserTodoToAdd, UserTodoToDelete, UserTodoToToggle, UserTodos, TodoList, Todo } from './../../../types.d' 
 
 interface TodoState {
   todoList: TodoList;
@@ -10,7 +11,6 @@ interface TodoState {
 }
 
 const initialState: TodoState = {
-  //todoList: [{userId: '', items: []}],
   todoList: [],
   addTodo: () => {},
   deleteTodo: () => {},
@@ -69,7 +69,7 @@ export const TodoContextProvider: FC = (props: any) => {
           .filter((todoUserList: UserTodos) => todoUserList.userId === action.payload.userId)
           .map((todoUserList: UserTodos) => {
             const todoItem = todoUserList.items
-              .filter((item: Todo) => item.id === action.payload.todoId)
+              .filter((item: Todo, index: number) => index === action.payload.index)
             todoItem[0].completed = !todoItem[0].completed
             return todoUserList
           })
