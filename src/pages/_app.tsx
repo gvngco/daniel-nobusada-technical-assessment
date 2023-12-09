@@ -7,6 +7,8 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     <>
+    {/* 
+      // @ts-ignore */}
       <TodoContextProvider>
         <Component {...pageProps} />
       </TodoContextProvider>

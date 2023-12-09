@@ -8,11 +8,23 @@ import { TodoContext, TodoContextProvider, actionTypes } from './context/todoCon
 import debounce from 'lodash.debounce';
 import { DebounceInput } from 'react-debounce-input';
 
+/*
+  [ ] when selecting another user, it seems that the todo list is clearing out
+  [ ] toggle action
+  [ ] listing no todos with default text
+  [ ] move slugify to utils file
+  [ ] style this component
+  [ ] show warning when no user is selected
+  [ ] input events are being fired multiple times. debouncing might not be working properly
+  [ ] tests where relevant 
+  [ ] store on localstorage
+*/
+
 type TodoProps = {}
 
 const Todo = (props: TodoProps) => {
   const [selectedUser, setSelectedUser] = useState<string | null>(null);
-  const {todoList, addTodo} = useContext(TodoContext)
+  const {todoList, addTodo, deleteTodo, toggleTodo} = useContext(TodoContext)
   const [inputTodo, setInputTodo] = React.useState<string>('')
   const [thisUserTodos, setThisUserTodos] = useState<UserTodos>({
     userId: '',
@@ -48,7 +60,6 @@ const Todo = (props: TodoProps) => {
 }
 
   const buttonAddTodo = () => {
-    // button is being clicked once
     if (selectedUser === null) return // should a warning be shown?
     addTodo({
       userId: selectedUser,
@@ -64,28 +75,37 @@ const Todo = (props: TodoProps) => {
   const handleTodoAddButton = debounce(buttonAddTodo, 300, { leading: true, trailing: false })
 
   const buttonDeleteTodo =  (index: number) => {
-    console.log(index)
-    const thisUserList = todoList.filter((todo) => todo.userId === selectedUser)
-    console.log(thisUserList)
+   if (selectedUser === null) return // should a warning be shown?
+    deleteTodo({
+      userId: selectedUser, 
+      index
+    })
+  }
+
+ const buttonToggleTodo =  (index: number) => {
+   if (selectedUser === null) return // should a warning be shown?
+    toggleTodo({
+      userId: selectedUser, 
+      index
+    })
   }
 
   useEffect(() => {
     if (selectedUser === null) return
     const thisUserList = todoList.filter((todoUserList) => todoUserList.userId === selectedUser)
     setThisUserTodos(thisUserList[0])
-  }, [selectedUser])
+  }, [selectedUser, todoList])
   
   console.log(todoList)
 
   return (
     <div>
-      <h1>Please select an user to manage its todo list</h1>
+      <h1>Please select an user to manage their to do list</h1>
       <DropdownTodo
         users={mockUsers}
         setSelectedUser={setSelectedUser}
       />
       {
-        // I got no idea why when selecting an user the todo list is not rendered
         thisUserTodos?.items && thisUserTodos.items
           .map((todo, index) => { 
             return <TodoItem
@@ -93,6 +113,7 @@ const Todo = (props: TodoProps) => {
               index={index}
               item={todo}
               buttonDeleteTodo={buttonDeleteTodo}
+              buttonToggleTodo={buttonToggleTodo}
             />
           })
       }

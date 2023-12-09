@@ -4,9 +4,9 @@ import { FC, createContext, useMemo, useReducer } from "react"
 
 interface TodoState {
   todoList: TodoList;
-  addTodo: (userTodoToAdd : UserTodoToAdd) => void;
-  deleteTodo: (userId: string, todoId: string) => void;
-  toggleTodo: (userId: string, todoId: string) => void;
+  addTodo: (userTodoToAdd: UserTodoToAdd) => void;
+  deleteTodo: (userTodoToDelete: UserTodoToDelete) => void;
+  toggleTodo: (userTodoToToggle: UserTodoToToggle) => void;
 }
 
 const initialState: TodoState = {
@@ -30,43 +30,41 @@ export const TodoContextProvider: FC = (props: any) => {
   const todoReducer = (state: any, action: any) => {
     switch (action.type) {
       case actionTypes.ADD_TODO_ITEM: {
-        // first add todo item runs once
-        // from second add todo onward it runs twice
-        debugger;
-        if (state.todoList.length > 0) {
-          const userTodoList = state.todoList
-            .filter((todoUserList: UserTodos) => todoUserList.userId === action.payload.userId)
-          if (userTodoList.length > 0) {
-            userTodoList[0].items.push(action.payload.item)
-            return {
-              ...state,
-              todoList: [...state.todoList]
-            }
+        if (!state.todoList.find((todoUserList: UserTodos) => todoUserList.userId === action.payload.userId)) {
+          var userTodos : UserTodos = {
+            userId: action.payload.userId,
+            items: [action.payload.item]
           }
-          // what if list gets empty?
-        }
-        var userTodos : UserTodos = {
-          userId: action.payload.userId,
-          items: [action.payload.item]
-        }
           return {
             ...state,
-            todoList: [...state.todoList, userTodos] // convert item to items list
+            todoList: [...state.todoList, userTodos]
           }
-      }
-      /*
-      case actionTypes.DELETE_TODO_ITEM: {
-        // this scenario wasnt property tested due the list not being maintained properly
+        }
+
         const userTodoList = state.todoList
           .filter((todoUserList: UserTodos) => todoUserList.userId === action.payload.userId)
-          .filter((todoUserList: UserTodos) => todoUserList.items[0].id !== action.payload.todoId)
+          .map((todoUserList: UserTodos) => {
+            todoUserList.items.push(action.payload.item)
+            return todoUserList
+          })
+
         return {
           ...state,
           todoList: [...userTodoList]
         }
       }
+      case actionTypes.DELETE_TODO_ITEM: {
+        const userTodoList = state.todoList.filter((todoUserList: UserTodos) => todoUserList.userId === action.payload.userId)
+        delete userTodoList[0].items[action.payload.index]
+
+        const otherUsersTodoList = state.todoList.filter((todoUserList: UserTodos) => todoUserList.userId !== action.payload.userId)
+
+        return {
+          ...state,
+          todoList: [...otherUsersTodoList, userTodoList[0]]
+        }
+      }
       case actionTypes.TOGGLE_TODO_ITEM: {
-        // this scenario wasnt property tested due the list not being maintained properly
         const userTodolist = state.todoList
           .filter((todoUserList: UserTodos) => todoUserList.userId === action.payload.userId)
           .map((todoUserList: UserTodos) => {
@@ -75,12 +73,12 @@ export const TodoContextProvider: FC = (props: any) => {
             todoItem[0].completed = !todoItem[0].completed
             return todoUserList
           })
+
           return {
             ...state,
             todoList: [...userTodolist]
           }
       }
-      */
       default:
         return state
     }
@@ -93,14 +91,15 @@ export const TodoContextProvider: FC = (props: any) => {
     payload: userTodoToAdd
   })
 
-  const deleteTodo = (userId: string, todoId: string) => dispatch({
+  const deleteTodo = (userTodoToDelete: UserTodoToDelete) => dispatch({
     type: actionTypes.DELETE_TODO_ITEM,
-    payload: { userId, todoId }
+    payload: userTodoToDelete
   })
 
-  const toggleTodo = (userId: string, todoId: string) => dispatch({
+
+  const toggleTodo = (userTodoToToggle: UserTodoToToggle) => dispatch({
     type: actionTypes.TOGGLE_TODO_ITEM,
-    payload: { userId, todoId }
+    payload: userTodoToToggle 
   })
 
   const value = useMemo (

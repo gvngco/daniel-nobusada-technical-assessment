@@ -9,9 +9,19 @@ type UserTodos = {
 	items: Todo[];
 };
 
-type UserTodoToAdd = {
+type UserTodoToAdd = { // type TodoAdAction
 	userId: string;
 	item: Todo;
+}
+
+type UserTodoToDelete = {
+	userId: string;
+	index: int
+}
+
+type UserTodoToToggle = {
+	userId: string;
+	index: int
 }
 
 type TodoList = UserTodos[];
