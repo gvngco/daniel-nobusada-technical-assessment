@@ -3,7 +3,7 @@ import "@testing-library/jest-dom/extend-expect"
 export type Todo = {
 	id?: string;
 	value: string;
-  completed: boolean
+	completed: boolean
 };
 
 export type UserTodos = {
